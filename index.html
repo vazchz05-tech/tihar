@@ -15,6 +15,9 @@ body {
   font-family:Georgia,serif;
   text-align:center;
   overflow-x:hidden;
+  min-height:100vh;
+  background-image:radial-gradient(circle at 12% 18%,#ffb34718 0 2px,transparent 3px),radial-gradient(circle at 88% 32%,#ffdf8a18 0 2px,transparent 3px);
+  background-size:90px 90px,120px 120px;
 }
 
 .screen {
@@ -23,13 +26,18 @@ body {
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  padding:35px 20px;
+  padding:55px 20px;
   position:relative;
   overflow:hidden;
   background:
-    radial-gradient(ellipse at 50% 0%,#59244e 0%,transparent 60%),
-    linear-gradient(145deg,#090617,#20102e,#090617);
+    radial-gradient(ellipse at 50% 0%,#8b3d5d66 0%,transparent 58%),
+    radial-gradient(ellipse at 50% 100%,#b66b1d20 0%,transparent 55%),
+    linear-gradient(145deg,#090617,#20102e 52%,#090617);
 }
+
+.screen::before,.screen::after { content:"✦  ·  ✧  ·  ✦"; position:absolute; color:#ffd47770; letter-spacing:22px; font-size:18px; pointer-events:none; }
+.screen::before { top:24px; }
+.screen::after { bottom:24px; }
 
 .screen.active {
   display:flex;
@@ -46,7 +54,11 @@ h1 {
   color:#ffd477;
   text-shadow:0 0 15px #ff9b32,0 0 45px #ff7400;
   margin:20px 0;
+  letter-spacing:2px;
+  animation:titleGlow 3s ease-in-out infinite alternate;
 }
+
+@keyframes titleGlow { to { text-shadow:0 0 22px #ffbd55,0 0 65px #ff7400; } }
 
 h2 {
   color:#ffcf75;
@@ -59,6 +71,7 @@ p {
   line-height:1.8;
   font-size:18px;
   margin:12px;
+  color:#f8e9d0;
 }
 
 .nepali { color:#ffd477;font-size:24px; }
@@ -74,8 +87,14 @@ button {
   font-size:16px;
   cursor:pointer;
   box-shadow:0 0 25px #ffb43880;
-  transition:.3s;
+  transition:transform .25s, box-shadow .25s, filter .25s;
+  letter-spacing:1px;
+  position:relative;
+  z-index:2;
 }
+
+button:hover { transform:translateY(-3px) scale(1.06); box-shadow:0 0 18px #ffd477,0 0 42px #ff9b3280; filter:saturate(1.2); }
+button:focus-visible { outline:3px solid #fff1ce; outline-offset:4px; }
 
 button:hover {transform:scale(1.08);}
 
@@ -199,14 +218,18 @@ button:hover {transform:scale(1.08);}
   right:12px;
   background:#3a2442;
   color:#ffe1a0;
+  border:1px solid #ffd47770;
+  backdrop-filter:blur(12px);
+  box-shadow:0 8px 30px #0006;
   border-radius:30px;
   padding:10px 15px;
   font-size:12px;
   z-index:20;
+  letter-spacing:.3px;
 }
 
 .small {
-  color:#c8a879;
+  color:#d8bd98;
   font-size:13px;
 }
 </style>
@@ -460,15 +483,17 @@ function playMusic() {
 
     const freq = melody[musicStep % melody.length];
 
-    note(freq,.28,"triangle",.075);
+    note(freq,.32,"triangle",.075);
+    note(freq*2,.18,"sine",.018);
 
     if(musicStep % 4 === 0) {
-      note(freq/2,.4,"sine",.07);
+      note(freq/2,.42,"sine",.065);
       drum();
     }
 
     if(musicStep % 8 === 4) {
-      note(freq*1.5,.2,"sine",.025);
+      note(freq*1.5,.22,"sine",.03);
+      note(freq*1.25,.16,"triangle",.018);
     }
 
     musicStep++;
@@ -514,7 +539,7 @@ function startCelebration() {
   playMusic();
 
   document.getElementById("musicStatus").innerText =
-    "🎵 Original Deusi melody playing";
+    "🎵 Deusi-inspired music playing";
 
   showScreen("deusi");
 
